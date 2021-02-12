@@ -14,8 +14,8 @@ class PoolTable:
         self.is_occupied = False
         self.start_time = datetime.datetime.now()
         self.end_time = datetime.datetime.now()
-        self.time_played = 0
-
+        self.time_played = ""
+        self.cost = 0
     
     def check_out_to_players(self):
         start_timestamp = format_time(datetime.datetime.now())
@@ -35,12 +35,15 @@ class PoolTable:
 
     def total_playtime(self):
         delta = self.end_time - self.start_time
-        self.time_played = delta
         seconds = delta.seconds
         hours = seconds // 3600
         remaining_secs = seconds - (hours * 3600)
         minutes = remaining_secs // 60
+        cost_per_second = 30/3600
+        self.cost = seconds * cost_per_second
+        self.time_played = str(f"{hours} hours, {minutes} minutes")
         print('\nTotal Time Played: {:02} hours, {:02} minutes\n'.format(int(hours), int(minutes)))
+        print('\nTotal Cost: ${:02}\n'.format(self.cost))
 
 
 # MAKE TIME PRETTY
@@ -94,13 +97,15 @@ def morph_for_json(list):
         bool_occupancy = bool(table.is_occupied)
         str_start = str(table.start_time)
         str_end = str(table.end_time)
-        str_total = str(table.total_playtime)  
+        str_total = str(table.time_played) 
+        float_cost = float(table.cost) 
         table_dict = {
             "ident": int_ident, 
             "is_occupied": bool_occupancy, 
             "start_time": str_start, 
             "end_time": str_end,
-            "total_playtime": str_total
+            "time_played": str_total,
+            "cost": float_cost
             }
         dictionary_list.append(table_dict)
     with open (f"{today}.json", "w") as file_object:
