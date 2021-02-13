@@ -17,6 +17,7 @@ class PoolTable:
         self.time_played = ""
         self.cost = 0
     
+    
     def check_out_to_players(self):
         start_timestamp = format_time(datetime.datetime.now())
         self.start_time = datetime.datetime.now()
@@ -43,7 +44,7 @@ class PoolTable:
         self.cost = seconds * cost_per_second
         self.time_played = str(f"{hours} hours, {minutes} minutes")
         print('\nTotal Time Played: {:02} hours, {:02} minutes\n'.format(int(hours), int(minutes)))
-        print('\nTotal Cost: ${:02}\n'.format(self.cost))
+        print('Total Cost: ${:.2f}\n'.format(self.cost))
 
 
 # MAKE TIME PRETTY
@@ -60,7 +61,7 @@ def occupancy_check():
         if table.is_occupied == True:
             start = format_time(table.start_time)
             table.end_time = datetime.datetime.now()
-            print(f"Table #{table.ident} - OCCUPIED - Play started on {start}.")
+            print(f"\nTable #{table.ident} - OCCUPIED - Play started on {start}.")
             table.total_playtime()
         else:
             print(f"\nTable #{table.ident} - VACANT")
